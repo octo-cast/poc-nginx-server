@@ -7,7 +7,7 @@
 
 This Docker image can be used to create a video streaming server that supports [**RTMP**](https://en.wikipedia.org/wiki/Real-Time_Messaging_Protocol), [**HLS**](https://en.wikipedia.org/wiki/HTTP_Live_Streaming), [**DASH**](https://en.wikipedia.org/wiki/Dynamic_Adaptive_Streaming_over_HTTP) out of the box. 
 It also allows adaptive streaming and custom transcoding of video streams.
-All modules are built from source on Alpine Linux base images.
+The module is built from source on Alpine Linux base image.
 
 ## Features
  * The backend is [**Nginx**](http://nginx.org/en/) with [**nginx-rtmp-module**](https://github.com/arut/nginx-rtmp-module).
@@ -16,12 +16,12 @@ All modules are built from source on Alpine Linux base images.
 	* RTMP is ON
 	* HLS is ON (adaptive, 5 variants)
 	* DASH is ON 
-	* Other Nginx configuration files are also provided to allow for no-FFmpeg transcoding. 
+	* Other Nginx configuration file is also provided to allow for no-FFmpeg transcoding. 
  * Statistic page of RTMP streams at `http://<server ip>:<server port>/stats`.
  * Available web video players (based on [video.js](https://videojs.com/) and [hls.js](https://github.com/video-dev/hls.js/)) at `/usr/local/nginx/html/players`. 
 
 Current Image is built using:
- * Nginx 1.21.5 (compiled from source) (more recent versions of Nginx make the stats crash)
+ * Nginx 1.21.5 (compiled from source) (more recent versions of Nginx seems to have issues with stats page (pid 8))
  * Nginx-rtmp-module 1.2.2 (compiled from source)
  * FFmpeg 6.0 (compiled from source)
 
@@ -29,12 +29,12 @@ Current Image is built using:
 
 ### To build the image
 ```
-docker build -t nginx_rtmp .
+docker build -t poc_octocast_nginx_server .
 ```
 
 ### To run the server
 ```
-docker run -d -p 1935:1935 -p 8080:8080 nginx_rtmp
+docker run -d -p 1935:1935 -p 8080:8080 poc_octocast_nginx_server
 ```
 where `1935` is the RTMP port and `8080` is the HTTP port.
 
@@ -64,14 +64,11 @@ Go to Settings > Stream, choose the following settings:
 	 * Click Play.
 
 * **Using provided web players:** <br/>
-The provided demo players assume the stream-key is called `test` and the player is opened in localhost. 
-	* To play HLS content: `http://localhost:8080/players/hls.html`
-	* To play HLS content using hls.js library: `http://localhost:8080/players/hls_hlsjs.html`
-	* To play DASH content: `http://localhost:8080/players/dash.html`
+The provided demo players assume the stream-key is called `test`. 
+	* To play HLS content: `http://<server ip>:8080/players/hls.html`
+	* To play HLS content using hls.js library: `http://<server ip>:8080/players/hls_hlsjs.html`
+	* To play DASH content: `http://<server ip>:8080/players/dash.html`
 
-	**Notes:** 
-
-	* These web players are hardcoded to play stream key "test" at localhost.
 
 ## Copyright
 Released under MIT license.
